@@ -1,0 +1,23 @@
+﻿<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand text-danger">Pizzeria 'nda Giggino</span>
+            <span><img src="/img/icon-pizza.png" alt="icon pizza" class="navbar-icon" /></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    @if (User.IsInRole("ADMIN"))
+                        {
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="@Url.Action("Index", "User")">Admin</a>
+                    </li>
+                        }
+                    <!-- altre voci di menu -->
+                    <partial name="_LoginPartial" />
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

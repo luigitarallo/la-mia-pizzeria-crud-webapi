@@ -1,0 +1,80 @@
+﻿@using la_mia_pizzeria_razor_layout.Data
+@model List<Pizza>
+﻿@{
+    using la_mia_pizzeria_razor_layout.Data.PizzaContext db = new PizzaContext();
+    ViewData["Title"] = "La pizzeria di Giggino";
+}
+
+<div class="wrapper">
+    <div class="container">
+        <h1 class="text-center text-light p-4">Pizze disponibili</h1>
+        <div class="row">
+            <table class="table table-dark table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center bg-danger">Name</th>
+                        <th scope="col" class="text-center bg-danger">Image</th>
+                        <th scope="col" class="text-center bg-danger">Price</th>
+                        <th scope="col" class="text-center bg-danger">Description</th>
+                        <th scope="col" class="text-center bg-danger">Details</th>
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                        <th scope="col" class="text-center bg-danger">Edit</th>
+                        <th scope="col" class="text-center bg-danger">Delete</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Non ci sono pizze disponibili al momento.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (Pizza pizza in Model)
+                        {
+                            <tr>
+                                <td class="text-center align-content-center">@pizza.Name</td>
+                                <td class="text-center align-content-center"><img src="@Url.Content(pizza.Photo)" class="img-thumbnail small-image" alt="@pizza.Name"></td>
+                                <td class="text-center align-content-center">€ @pizza.Price</td>
+                                <td class="text-center align-content-center">@pizza.Description</td>
+                                <td class="text-center align-content-center">
+                                    <button type="button" class="btn btn-danger">
+                                        <a href="@Url.Action("Show", "Pizza", new { id = pizza.PizzaId })"><i class="bi bi-arrow-up-right-square"></i></a>
+                                    </button>
+                                </td>
+                                @if (User.IsInRole("ADMIN"))
+                                {
+                                <td class="text-center align-content-center">
+                                    <button type="button" class="btn btn-warning">
+                                        <a href="@Url.Action("Update", "Pizza", new { id = pizza.PizzaId })"><i class="bi bi-pencil-square"></i></a>
+                                    </button>
+                                </td>
+                                <td class="text-center align-content-center">
+                                    <form asp-controller="Pizza" asp-action="Delete" asp-route-id="@pizza.PizzaId" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-success text-dark">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @if (User.IsInRole("ADMIN"))
+            {
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-danger mb-5">
+                    <a href="@Url.Action("Create","Pizza")">Add New Pizza</a>
+                </button>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+

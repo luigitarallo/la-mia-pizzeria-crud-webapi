@@ -1,0 +1,45 @@
+﻿@using la_mia_pizzeria_razor_layout.Data
+@model List<Pizza>
+﻿@{
+    using la_mia_pizzeria_razor_layout.Data.PizzaContext db = new PizzaContext();
+    ViewData["Title"] = "La pizzeria di Giggino";
+}
+
+<div class="wrapper mt-5">
+    <div class="container">
+        <h1 class="text-center text-light p-5">Pizze disponibili</h1>
+        <div class="row">
+            <table class="table table-dark table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center bg-danger">Name</th>
+                        <th scope="col" class="text-center bg-danger">Image</th>
+                        <th scope="col" class="text-center bg-danger">Price</th>
+                        <th scope="col" class="text-center bg-danger">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Non ci sono pizze disponibili al momento.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (Pizza pizza in Model)
+                        {
+                            <tr>
+                                <td class="text-center align-content-center">@pizza.Name</td>
+                                <td class="text-center align-content-center"><img src="@Url.Content(pizza.Photo)" class="img-thumbnail small-image" alt="@pizza.Name"></td>
+                                <td class="text-center align-content-center">€ @pizza.Price</td>
+                                <td class="text-center align-content-center">@pizza.Description</td>
+                            </tr>
+                        }
+                    }
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

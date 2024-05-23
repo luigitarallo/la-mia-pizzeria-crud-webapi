@@ -1,0 +1,63 @@
+﻿@model PizzaFormModel
+<div class="show-pizza-wrapper">
+    <div class="container mt-5 vh-100">
+        <div class="d-flex justify-content-end mb-3">
+            <a href="@Url.Action("Index", "Pizza")" class="btn btn-danger">Back to all Pizzas</a>
+        </div>
+        <div class="card p-4">
+            <form asp-controller="Pizza" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label for="name" class="form-label text-danger">Name:</label>
+                    <input asp-for="Pizza.Name" class="form-control" id="name" aria-describedby="name">
+                    <span asp-validation-for="Pizza.Name" class="text-secondary"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Description" class="form-label text-danger">Description:</label>
+                    <input asp-for="Pizza.Description" class="form-control" id="Description" aria-describedby="description">
+                    <span asp-validation-for="Pizza.Description" class="text-secondary"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Photo" class="form-label text-danger">Photo:</label>
+                    <input asp-for="Pizza.Photo" class="form-control" id="Photo" aria-describedby="photo">
+                    <span asp-validation-for="Pizza.Photo" class="text-secondary"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Price" class="form-label text-danger">Price:</label>
+                    <input asp-for="Pizza.Price" class="form-control" id="Price" aria-describedby="price">
+                    <span asp-validation-for="Pizza.Price" class="text-secondary"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Category" class="text-danger">Category:</label>
+                    <select asp-for="Pizza.CategoryId" rows="10" class="form-select" id="Category" aria-describedby="Category">
+                        <option value=""></option>
+                        @foreach (Category category in Model.Categories)
+                        {
+                            @if (Model.Pizza.CategoryId == category.Id)
+                            {
+                                <option value="@category.Id" selected>@category.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        }
+                    </select>
+
+                </div>
+                <div class="mb-3 d-flex flex-wrap">
+                    @for (int i = 0; i < Model.Ingredients.Count; i++)
+                    {
+                        <div class="p-2">
+                            <input class="checkbox" type="checkbox" name="SelectedIngredients" value="@Model.Ingredients[i].Value"
+                            @(Model.SelectedIngredients.Contains(Model.Ingredients[i].Value) ? "checked" : "") />
+                            @Model.Ingredients[i].Text
+                        </div>
+                    }
+                </div>
+                <button type="submit" class="btn btn-secondary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
