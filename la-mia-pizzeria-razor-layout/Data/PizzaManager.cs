@@ -11,10 +11,18 @@ namespace la_mia_pizzeria_razor_layout.Data
             using PizzaContext db = new PizzaContext();
             return db.Pizzas.Count();
         }
-        public static List<Pizza> GetAllPizzas()
+        public static List<Pizza> GetAllPizzas(string? name = null)
         {
             using PizzaContext db = new PizzaContext();
-            return db.Pizzas.ToList();
+            if (name != null)
+            {
+                string searchName = name.ToLower();
+                return db.Pizzas.Where(p => p.Name.ToLower().Contains(searchName)).ToList();            
+            }
+            else
+            {
+                return db.Pizzas.ToList();
+            }
         }
         public static List<Category> GetCategories()
         {

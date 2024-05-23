@@ -38,7 +38,6 @@ namespace la_mia_pizzeria_razor_layout.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN")]
-
         public IActionResult Create(PizzaFormModel data)
         {
             if (!ModelState.IsValid)
@@ -54,7 +53,6 @@ namespace la_mia_pizzeria_razor_layout.Controllers
 
         [HttpGet]
         [Authorize(Roles = "ADMIN")]
-
         public IActionResult Update(int id)
         {
             Pizza pizzaToEdit = PizzaManager.GetPizzaById(id);
@@ -74,7 +72,6 @@ namespace la_mia_pizzeria_razor_layout.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN")]
-
         public IActionResult Update(int id, PizzaFormModel data)
         {
             if (!ModelState.IsValid)
@@ -111,7 +108,6 @@ namespace la_mia_pizzeria_razor_layout.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN")]
-
         public IActionResult Delete(int id)
         {
             if (PizzaManager.DeletePizza(id))
