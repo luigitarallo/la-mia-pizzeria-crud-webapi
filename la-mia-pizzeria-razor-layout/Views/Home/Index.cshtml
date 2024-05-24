@@ -5,16 +5,21 @@
     ViewData["Title"] = "La pizzeria di Giggino";
 }
 
-<div class="wrapper">
-    <div class="container h-auto">
-        <h1 class="text-center text-light p-5">Available Pizzas</h1>
-        <div class="row no_pizzas d-none">
+<div class="wrapper h-100">
+    <div class="container ">
+        <h1 class="text-center text-light p-2">Menu</h1>
+        <input class="pizza_search" placeholder="Search a pizza" />
+        <div class="row no_pizzas d-none vh-100">
             <div class="col">
-                <h2>No Pizzas in the database</h2>
+                <h1 class="text-center text-light p-2">No Pizzas in the database</h1>
             </div>
         </div>
-        <div class="row pizzas_list d-none">
-            
+        <div class="row pizzas_list d-none ">
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="@Url.Action("Create", "Home")" class="btn btn-primary">Crea post</a>
+            </div>
         </div>
     </div>
 </div>
@@ -51,11 +56,29 @@
                                             <p class="card-text">€ ${pizza.price}</p>
                                         </div>
                                     </div>
+                                        <div class="btn btn-danger" onclick="deleteById(${pizza.id})">Delete Pizza</div>
                                 </div>
                             </div>`;
                     })
                 }
             });
     }
+    function deleteById(id) {
+        axios.delete("/api/PizzaWeb/PizzaDelete/" + id)
+            .then((res) => {
+                loadPizzaList('');
+            });
+    }
+    function searchPizza() {
+        console.log(this.value);
+        loadPizzaList(this.value);
+    }
+    document.querySelector('.pizza_search').addEventListener('keyup', searchPizza)
     loadPizzaList('');
 </script>
+
+<style>
+    .pizzas_list {
+        min-height: 100vh;
+    }
+</style>
