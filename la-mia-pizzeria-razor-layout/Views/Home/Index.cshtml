@@ -5,41 +5,57 @@
     ViewData["Title"] = "La pizzeria di Giggino";
 }
 
-<div class="wrapper mt-5">
-    <div class="container">
-        <h1 class="text-center text-light p-5">Pizze disponibili</h1>
-        <div class="row">
-            <table class="table table-dark table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center bg-danger">Name</th>
-                        <th scope="col" class="text-center bg-danger">Image</th>
-                        <th scope="col" class="text-center bg-danger">Price</th>
-                        <th scope="col" class="text-center bg-danger">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model == null || !Model.Any())
-                    {
-                        <tr>
-                            <td colspan="4" class="text-center">Non ci sono pizze disponibili al momento.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (Pizza pizza in Model)
-                        {
-                            <tr>
-                                <td class="text-center align-content-center">@pizza.Name</td>
-                                <td class="text-center align-content-center"><img src="@Url.Content(pizza.Photo)" class="img-thumbnail small-image" alt="@pizza.Name"></td>
-                                <td class="text-center align-content-center">€ @pizza.Price</td>
-                                <td class="text-center align-content-center">@pizza.Description</td>
-                            </tr>
-                        }
-                    }
-                   
-                </tbody>
-            </table>
+<div class="wrapper">
+    <div class="container h-auto">
+        <h1 class="text-center text-light p-5">Available Pizzas</h1>
+        <div class="row no_pizzas d-none">
+            <div class="col">
+                <h2>No Pizzas in the database</h2>
+            </div>
+        </div>
+        <div class="row pizzas_list d-none">
+            
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function loadPizzaList(nameFilter) {
+        axios.get('api/PizzaWeb/GetAllPizzas',
+            {
+                params:
+                {
+                    name: nameFilter
+                }
+            }).then((res) => {
+                console.log(res);
+                if (res.data.length == 0) {
+                    document.querySelector('.no_pizzas').classList.remove('d-none');
+                    document.querySelector('.pizzas_list').classList.add('d-none');
+                } else {
+                    document.querySelector('.no_pizzas').classList.add('d-none');
+                    let pizzaTable = document.querySelector('.pizzas_list');
+                    pizzaTable.classList.remove('d-none');
+                    pizzaTable.innerHTML = '';
+                    res.data.forEach((pizza) => {
+                        console.log(pizza);
+                        let imageUrl = pizza.photo.replace('~', '');
+                        pizzaTable.innerHTML += `
+                            <div class="col p-2">
+                                <div class="card" style = "width: 18rem;" >
+                                    <img src="${imageUrl}" class="img-fluid"/>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${pizza.name}</h5>
+                                            <p class="card-text">${pizza.description}</p>
+                                            <p class="card-text">€ ${pizza.price}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    })
+                }
+            });
+    }
+    loadPizzaList('');
+</script>

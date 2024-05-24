@@ -30,6 +30,30 @@ namespace la_mia_pizzeria_razor_layout.Controllers.Api
             return Ok(pizza);
         }
 
+        [HttpPost]
+        public IActionResult PizzaPost([FromBody] Pizza pizza)
+        {
+            PizzaManager.InsertPizza(pizza);
+            return Ok();
+        }
 
+        [HttpPut("{id}")]
+        public IActionResult PizzaPut(int id, [FromBody] Pizza pizza)
+        {
+            Pizza oldPizza = PizzaManager.GetPizzaById(id);
+            if(oldPizza == null)
+                return NotFound();
+            PizzaManager.UpdatePizza(id, pizza.Name, pizza.Description, pizza.Photo, pizza.Price, pizza.CategoryId, null);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult PizzaDelete(int id)
+        {
+            bool found = PizzaManager.DeletePizza(id);
+            if(!found)
+                return NotFound();
+            return Ok();
+        }
     }
 }
