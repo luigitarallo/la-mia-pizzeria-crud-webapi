@@ -7,15 +7,23 @@
             <form onsubmit="creaPizza(event)" method="post">
                 <div class="mb-3">
                     <strong>Name:</strong>
-                    <input id="PizzaTitle" type="text" class="d-block w-100" />
+                    <input id="PizzaName" type="text" class="d-block w-100" />
                 </div>
                 <div class="mb-3">
                     <strong>Description:</strong>
-                    <input id="PizzaContent" type="text" class="d-block w-100 is-invalid" />
+                    <input id="PizzaDescription" type="text" class="d-block w-100 is-invalid" />
+                </div>
+                <div class="mb-3">
+                    <strong>Photo:</strong>
+                    <input id="PizzaPhoto" type="text" class="d-block w-100 is-invalid" />
                 </div>
                 <div class="mb-3">
                     <strong>Price:</strong>
                     <input id="PizzaPrice" type="text" class="d-block w-100 is-invalid" />
+                </div>
+                <div class="mb-3">
+                    <strong>Category:</strong>
+                    <input id="PizzaCategory" type="text" class="d-block w-100 is-invalid" />
                 </div>
                 <div class="mb-3">
                     <input type="submit" class="btn btn-success" value="Crea" />
@@ -28,20 +36,27 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-    // function creaPost(evt) {
-    //     evt.preventDefault();
-    //     var title = document.getElementById('PostTitle').value;
-    //     var content = document.getElementById('PostContent').value;
+    function creaPizza(evt) {
+        evt.preventDefault();
+        let pizzaName = document.getElementById('PizzaName').value;
+        let pizzaDescription = document.getElementById('PizzaDescription').value;
+        let pizzaPhoto = document.getElementById('PizzaPhoto').value;
+        let pizzaPrice = document.getElementById('PizzaPrice').value;
+        let pizzaCategory = document.getElementById('PizzaCategory').value;
 
-    //     axios.post('/api/PostWeb/CreatePost', {
-    //         title: title,
-    //         content: content
-    //     })
-    //         .then(function (response) {
-    //             console.log(response);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
+
+        axios.post('/api/PizzaWeb/PizzaPost', {
+            name: pizzaName,
+            description: pizzaDescription,
+            photo: pizzaPhoto,
+            price: pizzaPrice,
+            categoryId: pizzaCategory
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 </script>
