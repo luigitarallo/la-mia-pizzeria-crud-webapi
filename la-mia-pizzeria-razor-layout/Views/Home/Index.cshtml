@@ -56,15 +56,15 @@
                                             <p class="card-text">€ ${pizza.price}</p>
                                         </div>
                                     </div>
-                                        <div class="btn btn-danger" onclick="deleteById(${pizza.id})">Delete Pizza</div>
+                                                        <button class="btn btn-danger" onclick="deleteById(${pizza.pizzaId})" data-pizza-id="${pizza.pizzaId}">Delete Pizza</button>
                                 </div>
                             </div>`;
                     })
                 }
             });
     }
-    function deleteById(id) {
-        axios.delete("/api/PizzaWeb/PizzaDelete/" + id)
+    function deleteById(pizzaId) {
+        axios.delete("/api/PizzaWeb/PizzaDelete/" + pizzaId)
             .then((res) => {
                 loadPizzaList('');
             });
